@@ -5,5 +5,9 @@
   "main": "index.js",
   "repository": "https://github.com/snoop2head/definetely_not_typed.git",
   "author": "young ahn",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "start": "node index.js",
+    "prestart": "tsc"
+  }
 }
