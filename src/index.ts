@@ -1,4 +1,4 @@
-// designating each argument's types with interface
+// designating each argument's types with interface, doesn't pass onto index.js
 /*
 interface Human {
   name: string;
@@ -13,7 +13,7 @@ const person = {
   language: "python"
 };
 
-*/
+
 
 // pass properties onto index.js and designate each argument's types with class
 class Human {
@@ -35,5 +35,34 @@ const sayNoop = (person: Human): string => {
 };
 
 console.log(sayNoop(myam));
+*/
+
+class Block {
+  public index: number;
+  public hash: string;
+  public previousHash: string;
+  public data: string;
+  public timestamp: number;
+  constructor(
+    index: number,
+    hash: string,
+    previousHash: string,
+    data: string,
+    timestamp: number
+  ) {
+    this.index = index;
+    this.hash = hash;
+    this.previousHash = previousHash;
+    this.data = data;
+    this.timestamp = timestamp;
+  }
+}
+
+const genesisBlock: Block = new Block(0, "qoiweoqeiw", "", "GAZUA!", 123456);
+
+// strictly checking types that it is Block class or not
+let blockchain: [Block] = [genesisBlock];
+
+console.log(blockchain);
 
 export {};
