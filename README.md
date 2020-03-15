@@ -12,9 +12,16 @@ Nomad Coders Course: https://github.com/nomadcoders/typechain
 
 - void: not returning anything from function
 
-- ```
+- ```shell
   yarn add tsc-watch --dev
   ```
 
-- 
+- dependencies
+
+  ```shell
+  yarn add typescript
+  yarn add crypto-js
+  ```
+
+  
 

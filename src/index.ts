@@ -37,12 +37,25 @@ const sayNoop = (person: Human): string => {
 console.log(sayNoop(myam));
 */
 
+// importing class from module crypto js
+import * as CryptoJS from "crypto-js";
+
 class Block {
   public index: number;
   public hash: string;
   public previousHash: string;
   public data: string;
   public timestamp: number;
+
+  // make the method available at any situation by static
+  static calculateBlockHash = (
+    index: number,
+    previousHash: string,
+    timestamp: number,
+    data: string
+  ): string =>
+    CryptoJS.SHA256(index + previousHash + timestamp + data).toString();
+
   constructor(
     index: number,
     hash: string,
@@ -58,11 +71,22 @@ class Block {
   }
 }
 
+// using calculateBlockHash method from Block class
+// Block.calculateBlockHash;
+
+// create initial Block array
 const genesisBlock: Block = new Block(0, "qoiweoqeiw", "", "GAZUA!", 123456);
 
-// strictly checking types that it is Block class or not
-let blockchain: [Block] = [genesisBlock];
+// strictly checking whether Block array's types fits to Block class or not
+// designating block class to block array
+let blockchain: Block[] = [genesisBlock];
 
-console.log(blockchain);
+// function that returns all block items in an array
+const getBlockChian = (): Block[] => blockchain;
+
+// function that returns one latest block item
+const getLatestBlock = (): Block => blockchain[blockchain.length - 1];
+
+const getNewTimeStamp = (): number => Math.round(new Date().getTime() / 1000);
 
 export {};
