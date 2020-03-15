@@ -1,6 +1,22 @@
-const sayNoop = (name: string, age: number, language: string): string => {
-  return `hello ${name}, you are ${age} old and you love ${language}`;
+// designating each argument's types with interface
+interface Human {
+  name: string;
+  age: number;
+  language: string;
+}
+
+// variable
+const person = {
+  name: "young",
+  age: 24,
+  language: "python"
 };
 
-console.log(sayNoop("AHN", 24, "python"));
+// function
+const sayNoop = (person: Human): string => {
+  return `hello ${person.name}, you are ${person.age} old and you love ${person.language}`;
+};
+
+console.log(sayNoop(person));
+
 export {};
