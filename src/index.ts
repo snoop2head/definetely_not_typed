@@ -47,7 +47,7 @@ class Block {
   public data: string;
   public timestamp: number;
 
-  // make the method available at any situation by static
+  // make the method available at any situation by using static
   static calculateBlockHash = (
     index: number,
     previousHash: string,
@@ -55,6 +55,15 @@ class Block {
     data: string
   ): string =>
     CryptoJS.SHA256(index + previousHash + timestamp + data).toString();
+
+  // make a method that returns true all false for checking 5 type validations
+  // make it available at any situation by using static
+  static validateBlockStructure = (anyBlock: Block): boolean =>
+    typeof anyBlock.index === "number" &&
+    typeof anyBlock.hash == "string" &&
+    typeof anyBlock.previousHash == "string" &&
+    typeof anyBlock.timestamp == "number" &&
+    typeof anyBlock.data == "string";
 
   constructor(
     index: number,
@@ -75,7 +84,7 @@ class Block {
 // Block.calculateBlockHash;
 
 // create initial Block array
-const genesisBlock: Block = new Block(0, "qoiweoqeiw", "", "GAZUA!", 123456);
+const genesisBlock: Block = new Block(0, "qoiweoqeiw", "", "myam-myam", 123456);
 
 // strictly checking whether Block array's types fits to Block class or not
 // designating block class to block array
@@ -88,5 +97,64 @@ const getBlockChian = (): Block[] => blockchain;
 const getLatestBlock = (): Block => blockchain[blockchain.length - 1];
 
 const getNewTimeStamp = (): number => Math.round(new Date().getTime() / 1000);
+
+// function that returns new block
+const createNewBlock = (data: string): Block => {
+  const previousBlock: Block = getLatestBlock();
+  const newIndex: number = previousBlock.index + 1;
+  const newTimeStamp: number = getNewTimeStamp();
+  const newHash: string = Block.calculateBlockHash(
+    newIndex,
+    previousBlock.hash,
+    newTimeStamp,
+    data
+  );
+  const newBlock: Block = new Block(
+    newIndex,
+    newHash,
+    previousBlock.hash,
+    data,
+    newTimeStamp
+  );
+  addBlock(newBlock);
+  return newBlock;
+};
+
+const getHashforBlock = (anyBlock: Block): string =>
+  Block.calculateBlockHash(
+    anyBlock.index,
+    anyBlock.previousHash,
+    anyBlock.timestamp,
+    anyBlock.data
+  );
+
+// taking two arguments of candidateBlock and previousBlock, returns boolean
+const isBlockValid = (candidateBlock: Block, previousBlock: Block): boolean => {
+  // first validate structure, check index / previoushash / hash
+  if (!Block.validateBlockStructure(candidateBlock)) {
+    return false;
+  } else if (previousBlock.index + 1 !== candidateBlock.index) {
+    return false;
+  } else if (previousBlock.hash !== candidateBlock.previousHash) {
+    return false;
+  } else if (getHashforBlock(candidateBlock) !== candidateBlock.hash) {
+    return false;
+  } else {
+    return true;
+  }
+};
+
+const addBlock = (candidateBlock: Block): void => {
+  if (isBlockValid(candidateBlock, getLatestBlock())) {
+    blockchain.push(candidateBlock);
+  }
+};
+
+// running blockchain: see how it inherits previousHash
+createNewBlock("second block");
+createNewBlock("third block");
+createNewBlock("fourth block");
+
+console.log(blockchain);
 
 export {};
